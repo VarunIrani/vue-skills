@@ -1,22 +1,28 @@
 <template>
   <div class="hello">
     <div class="holder">
+      <!-- Form validation using vee-validate -->
       <form @submit.prevent="addSkill">
         <input type="text" placeholder="Enter a skill that you have.." v-model="skill" v-validate="'min:5'" name="skill"/>
+        <!-- Animation for error message: Using transition-->
         <transition name="alert-in" enter-active-class="animated flipInX" leave-active-class="animated flipOutX">
           <p class="alert" v-if="errors.has('skill')">{{errors.first('skill')}}</p>
         </transition>
       </form>
       
       <ul>
+        <!-- Animating List Elements: Using transition-group -->
         <transition-group name="list" enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
           <li v-for="(data, index) in skills" :key="index">
             {{data.skill}}
+            <!-- Used to remove skill -->
             <i class="fa fa-minus-circle" @click="remove(index)"></i>
           </li>
         </transition-group>
       </ul>
-      <p>These are the skills that you possess.</p>
+      <!-- Vue Conditional Templating -->
+      <p v-if="skills.length == 0">You currently do not have any skill</p>
+      <p v-else>These are the skills that you possess.</p>
     </div>
   </div>
 </template>
@@ -34,10 +40,12 @@ export default {
     addSkill() {
       this.$validator.validateAll().then(result => {
         if (result) {
+          // Submit only if valid
           this.skills.push({ skill: this.skill });
           this.skill = "";
         } else {
-          console.log("Not Valid");
+          // Otherwise Console Log Error
+          console.error("Not Valid");
         }
       });
     },
