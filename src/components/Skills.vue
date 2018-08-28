@@ -45,7 +45,7 @@ export default {
           this.skill = "";
         } else {
           // Otherwise Console Log Error
-          console.error("Not Valid");
+          console.log("Not Valid");
         }
       });
     },
